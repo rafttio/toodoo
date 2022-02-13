@@ -1,0 +1,22 @@
+version: '3'
+services:
+  db:
+    hostname: todo-db
+    image: postgres:13.4-alpine3.14
+    volumes:
+      - database_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=password
+  web:
+    build: .
+    volumes:
+      - .:/app:cached
+    environment:
+      - DATABASE_URL=postgresql://postgres:password@todo-db/app_development
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+
+volumes:
+  database_data:

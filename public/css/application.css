@@ -1,0 +1,17 @@
+main {
+    padding-top: 40px;
+}
+
+.top8 {
+    margin-top: 8px;
+}
+
+.bottom-border {
+    border-bottom: 1px solid;
+    border-color: lightgray;
+}
+
+.trash-svg {
+    width: 1em;
+    height: 1em;
+}

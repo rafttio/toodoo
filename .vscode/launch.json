@@ -1,0 +1,22 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "web",
+            "type": "python",
+            "request": "launch",
+            "serviceName": "web",
+            "program": "${workspaceFolder}/app.py",
+            "console": "integratedTerminal",
+            "linux": {
+                "debugAdapterPath": "${env:HOME}/.raftt/plugins/debugpy/adapter",
+            },
+            "osx": {
+                "debugAdapterPath": "${env:HOME}/.raftt/plugins/debugpy/adapter",
+            },
+            "windows": {
+                "debugAdapterPath": "${env:HOMEPATH}/.raftt/plugins/debugpy/adapter",
+            }
+        }
+    ]
+}

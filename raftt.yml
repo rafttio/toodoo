@@ -1,0 +1,12 @@
+build:
+  dockerComposeFile: ./docker-compose.yml
+  workdir: ./
+devContainer: dev/dev-compose.yml
+data:
+  - service: db
+    type: postgres
+    user: postgres
+    dump: dev/dump.sql
+debugging:
+  - service: web
+    language: python

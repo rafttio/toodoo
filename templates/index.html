@@ -1,0 +1,87 @@
+{% extends "layout.html" %}
+{% block body %}
+<script>
+$(document).ready(function() {
+    $('#tasks-list').on('change', 'input.task-done', function() {
+        $.post('/tasks/done', {id: this.id, done: this.checked}, function(data){}, 'json');
+    });
+    
+    $('#tasks-list').on('click', 'button.task-trash', function() {
+        $.post('/tasks/delete', {id: this.id}, function(data){
+            $('#task-' + data.id).slideUp('medium', function() {$(this).remove()});
+        }, 'json');
+    });
+
+    $('form').submit(function() {
+        title = $('input[name=title]').val()
+        note = $('input[name=note]').val()
+        $.post('/tasks/create', $('form').serialize(), function(data){
+            if (data['id']) {
+                $('#tasks-list').append('<div id="task-' + data['id'] + '" class="d-flex flex-row py-2 top8 align-items-center bottom-border">\n' +
+                    '<div class="col-1 pr-1">\n' +
+                        '<button id="' +  data['id'] + '" class="task-trash btn btn-outline-light align-middle btn-sm mr-2"><svg class="trash-svg"><use xlink:href="#trash" /></svg></button>\n' +
+                        '<input id="' + data['id'] + '" class="task-done align-middle" type="checkbox" />\n' +
+                    '</div>\n' +
+                    '<div class="col-11">\n' +
+                        '<h6 class="my-0 text-light">' + $("<div>").text(title).html() + '</h6>\n' +
+                        '<small class="text-light">' + $("<div>").text(note).html() + '</small>\n' +
+                    '</div>\n' +
+                '</div>\n')
+                $('input[name=title]').val("")
+                $('input[name=note]').val("")
+            }
+        }, 'json');
+    });
+});
+</script>
+
+<div class="container-fluid px-5">
+    <div class="row">
+        <div id="tasks-list" class="col-lg-8 mb-5">
+            <h1 class="text-light" >Tasks:</h1>
+            {% for task in tasks %}
+            <div id="task-{{ task.id }}" class="d-flex flex-row py-2 top8 align-items-center bottom-border">
+                <div class="col-1 pr-1">
+                    <button id="{{ task.id }}" class="task-trash btn btn-outline-light align-middle btn-sm mr-2"><svg class="trash-svg"><use xlink:href="#trash" /></svg></button>
+                    <input id="{{ task.id }}" class="task-done align-middle" type="checkbox" {{ 'checked' if task.done else '' }}/>
+                </div>
+                <div class="col-11">
+                    <h6 class="my-0 text-light">{{ task.title }}</h6>
+                    <small class="text-light">{{ task.note }}</small>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <br><br>
+        <div class="col-lg-4">
+            <div class="border rounded px-4 py-3">
+                <form action="javascript:void(0);">
+                    <div class="form-group row">
+                        <h2 class="text-light ml-2">Create new task:</h2>
+                    </div>
+                    <div class="form-group row">
+                        <label for="new-task-title" class="col-sm-2 col-form-label text-light">Title</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="title" class="form-control" id="new-task-title">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="new-task-note"  class="col-sm-2 col-form-label text-light">Note</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="note" class="form-control" id="new-task-note">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<svg display="none">
+    <symbol id="trash" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" class="bi bi-trash">
+        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+        <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+    </symbol>
+</svg>
+{% endblock %}
