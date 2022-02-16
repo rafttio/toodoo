@@ -37,6 +37,17 @@ def create():
         return str(e)
 
 
+@app.route("/tasks/emoji", methods=['POST'])
+def emoji():
+    try:
+        task = Task.query.get(request.form["id"])
+        task.emoji = request.form["emoji"]
+        db.session.commit()
+        return ""
+    except Exception as e:
+        return str(e)
+
+
 @app.route("/tasks/done", methods=['POST'])
 def done():
     try:
