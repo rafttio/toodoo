@@ -7,3 +7,4 @@ class Task(db.Model):
     title = db.Column(db.String())
     note = db.Column(db.String())
     done = db.Column(db.Boolean(), default=False)
+    emoji = db.Column(db.String())

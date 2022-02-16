@@ -206,7 +206,8 @@ CREATE TABLE public.tasks (
     id bigint NOT NULL,
     title character varying,
     note text,
-    done boolean DEFAULT false
+    done boolean DEFAULT false,
+    emoji character varying
 );
 
 
@@ -245,8 +246,8 @@ ALTER TABLE ONLY public.tasks ALTER COLUMN id SET DEFAULT nextval('public.tasks_
 --
 
 COPY public.ar_internal_metadata (key, value, created_at, updated_at) FROM stdin;
-environment	development	2021-03-10 08:07:20.231636	2021-03-10 08:07:20.239007
 schema_sha1	29d32ccc026e8144b9c56717ea910ce87493d11b	2021-03-10 08:07:20.246064	2021-03-10 08:07:20.246064
+environment	default_env	2021-03-10 08:07:20.231636	2021-05-05 15:47:21.801306
 \.
 
 
@@ -257,6 +258,7 @@ schema_sha1	29d32ccc026e8144b9c56717ea910ce87493d11b	2021-03-10 08:07:20.246064	
 COPY public.schema_migrations (version) FROM stdin;
 20201113191057
 20201113150931
+20201130145416
 \.
 
 
@@ -264,10 +266,11 @@ COPY public.schema_migrations (version) FROM stdin;
 -- Data for Name: tasks; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.tasks (id, title, note, done) FROM stdin;
-1	Test compression	Benchmark middle-out algorithm	f
-2	Validate Food Classification	Hot dog <> Not hot dog	f
-3	Pen Test	'; DROP TABLE tasks; --	t
+COPY public.tasks (id, title, note, done, emoji) FROM stdin;
+1	Gilfoyle's Task	Hack into Hooli's network	f	😐
+2	Monica's Task	Pitch Laurie Bream to join the next round	t	🤑
+3	Erlich's Task	Kick Jian Yang out	f	😡
+4	Jared's Task	Clean up after Richard's panic attack	f	🤢
 \.
 
 
@@ -275,7 +278,7 @@ COPY public.tasks (id, title, note, done) FROM stdin;
 -- Name: tasks_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.tasks_id_seq', 3, true);
+SELECT pg_catalog.setval('public.tasks_id_seq', 4, true);
 
 
 --
