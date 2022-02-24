@@ -1,6 +1,28 @@
 {% extends "layout.html" %}
 {% block body %}
 <script>
+function parseCookie() {
+    let elems = document.cookie.split(';');
+    map = {};
+    elems.forEach(element => {
+        key = element.split("=", 1)[0];
+        value = element.substr(key.length + 1);
+        if (key[0] == ' ') {
+            key = key.substr(1)
+        }
+        map[key] = value;
+    });
+    return map;
+}
+let livenessCookieName = "liveness-id";
+cookieMap = parseCookie();
+var livenessId = cookieMap[livenessCookieName];
+if (livenessId === undefined) {
+    livenessId = Math.floor(Math.random() * 1000000);
+    set_cookie_str = livenessCookieName + "=" + livenessId + ";";
+    document.cookie = set_cookie_str;
+}
+
 $(document).ready(function() {
     $('#tasks-list').on('change', 'input.task-done', function() {
         $.post('/tasks/done', {id: this.id, done: this.checked}, function(data){}, 'json');
@@ -32,6 +54,14 @@ $(document).ready(function() {
             }
         }, 'json');
     });
+
+    function updateLiveClients() {
+        $.get('/live', {id: livenessId}, function(data) {
+            $('#live_clients').html(data)
+        });
+        setTimeout(updateLiveClients, 1000)
+    }
+    updateLiveClients()
 });
 </script>
 

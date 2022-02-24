@@ -10,6 +10,17 @@
             "raftt": {
                 "workload": "web"
             }
+        },
+        {
+            "name": "live-backend",
+            "type": "go",
+            "request": "launch",
+            "mode": "debug",
+            "program": "${workspaceFolder}/live_backend/main.go",
+            "env": {
+                "RAFTT_SERVICE": "live-backend",
+                "WORKDIR": "${workspaceFolder}"
+            }
         }
     ]
 }
