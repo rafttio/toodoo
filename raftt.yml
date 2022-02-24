@@ -10,3 +10,5 @@ data:
 debugging:
   - service: web
     language: python
+  - service: live-backend
+    language: golang

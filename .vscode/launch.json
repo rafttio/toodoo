@@ -17,6 +17,17 @@
             "windows": {
                 "debugAdapterPath": "${env:HOMEPATH}/.raftt/plugins/debugpy/adapter",
             }
+        },
+        {
+            "name": "live-backend",
+            "type": "go",
+            "request": "launch",
+            "mode": "debug",
+            "program": "${workspaceFolder}/live_backend/main.go",
+            "env": {
+                "RAFTT_SERVICE": "live-backend",
+                "WORKDIR": "${workspaceFolder}"
+            }
         }
     ]
 }

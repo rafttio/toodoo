@@ -8,3 +8,5 @@ __pycache__/
 /.idea/
 /venv/
 .DS_Store
+
+__debug_bin
