@@ -1,0 +1,14 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="live-backend" type="GoApplicationRunConfiguration" factoryName="Go Application">
+    <module name="toodoo" />
+    <working_directory value="$PROJECT_DIR$" />
+    <go_parameters value="-i" />
+    <envs>
+      <env name="RAFTT_SERVICE" value="live-backend" />
+    </envs>
+    <kind value="FILE" />
+    <directory value="$PROJECT_DIR$" />
+    <filePath value="$PROJECT_DIR$/live_backend/main.go" />
+    <method v="2" />
+  </configuration>
+</component>

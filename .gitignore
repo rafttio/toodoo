@@ -10,3 +10,5 @@ __pycache__/
 .DS_Store
 node_modules/
 dist/
+
+__debug_bin

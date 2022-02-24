@@ -8,7 +8,9 @@ services:
     environment:
       - POSTGRES_PASSWORD=password
   web:
-    build: .
+    build:
+      dockerfile: ./docker/web/Dockerfile
+      context: .
     volumes:
       - .:/app:cached
     environment:
@@ -17,6 +19,19 @@ services:
       - "3000:3000"
     depends_on:
       - db
+      - live-backend
+  redis:
+    image: redis:6-alpine3.13
+  live-backend:
+    build:
+      dockerfile: ./docker/live_backend/Dockerfile
+      context: .
+    volumes:
+      - .:/app:cached
+    depends_on:
+      - redis
+    ports:
+      - "3002:3001"
 
 volumes:
   database_data:
