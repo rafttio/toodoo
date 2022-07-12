@@ -1,7 +1,9 @@
 build:
   dockerComposeFile: ./docker-compose.yml
   workdir: ./
+host: admiral.rafttdev.raftt.io
 devContainer: dev/dev-compose.yml
+envDefinition: raftt.star
 data:
   - service: db
     type: postgres
@@ -10,3 +12,13 @@ data:
 debugging:
   - service: web
     language: python
+secrets:
+  secret-volume:
+    inputcommand: cat secret-mount
+    outputvolume: true
+  env-secret:
+    inputcommand: cat secret-env
+    outputenv: DUMMY_ENV_SECRET
+  aws-credentials:
+    inputcommand: cat ~/.aws/credentials
+    outputvolume: true
