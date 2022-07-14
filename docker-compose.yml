@@ -1,13 +1,13 @@
 version: '3'
 services:
-  db:
+  db2:
     hostname: todo-db
     image: postgres:13.4-alpine3.14
     volumes:
       - database_data:/var/lib/postgresql/data
     environment:
       - POSTGRES_PASSWORD=password
-  web:
+  web2:
     build: .
     volumes:
       - .:/app:cached
