@@ -7,16 +7,16 @@ services:
       - database_data:/var/lib/postgresql/data
     environment:
       - POSTGRES_PASSWORD=password
-  web2:
-    build: .
-    volumes:
-      - .:/app:cached
-    environment:
-      - DATABASE_URL=postgresql://postgres:password@todo-db/app_development
-    ports:
-      - "3000:3000"
-    depends_on:
-      - db
+#  web2:
+#    build: .
+#    volumes:
+#      - .:/app:cached
+#    environment:
+#      - DATABASE_URL=postgresql://postgres:password@todo-db/app_development
+#    ports:
+#      - "3000:3000"
+#    depends_on:
+#      - db
 
 volumes:
   database_data:
