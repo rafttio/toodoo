@@ -1,4 +1,5 @@
 a = docker_compose("./docker-compose.yml")
 #deploy_another('https://github.com/sebastian13/docker-compose-nginx-proxy.git', 'master')
 deploy_another('https://github.com/rafttio/minimal', 'naor-multi-repo-test')
+#deploy_another('https://github.com/rafttio/e2e-test', 'naor-multi-repo-test')
 deploy(a)
