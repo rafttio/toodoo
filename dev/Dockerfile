@@ -1,4 +1,4 @@
-FROM public.ecr.aws/u8k8d5f0/dev:ubuntu-latest
+FROM docker.io/raftt/dev:ubuntu-latest
 
 COPY dev/env /code/dev/env
 COPY dev/cmds.sh /code/dev/cmds.sh
