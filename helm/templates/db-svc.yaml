@@ -1,0 +1,17 @@
+{{ if .Values.postgres.enable }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: todo-db
+  labels:
+    app.kubernetes.io/name: todo-db
+spec:
+  ports:
+    - port: 5432
+      protocol: TCP
+      targetPort: 5432
+  selector:
+    app.kubernetes.io/name: db
+  type: ClusterIP
+  clusterIP: None
+{{ end }}

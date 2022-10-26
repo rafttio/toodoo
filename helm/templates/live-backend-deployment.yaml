@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: live-backend
+  label:
+    app.kubernetes.io/name: live-backend
+spec:
+  replicas: {{ .Values.liveBackend.replicas }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: live-backend
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: live-backend
+    spec:
+      containers:
+        - name: live-backend
+          image: live-backend
+          env:
+            - name: REDIS_URL
+              value: {{ .Values.liveBackend.redisUrl }}

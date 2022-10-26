@@ -1,0 +1,13 @@
+web:
+  replicas: 4
+  postgresUrl: postgresql://postgres:password@todo-db/app_development
+
+liveBackend:
+  replicas: 2
+  redisUrl: redis:6379
+
+postgres:
+  enable: false
+
+redis:
+  enable: false
