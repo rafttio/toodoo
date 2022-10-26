@@ -1,0 +1,12 @@
+{{ if .Values.redis.enable }}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: redis
+  labels:
+    app.kubernetes.io/name: redis
+spec:
+  containers:
+  - name: redis
+    image: {{ .Values.redis.image }}
+{{ end }}

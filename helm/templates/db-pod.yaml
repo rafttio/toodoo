@@ -1,0 +1,18 @@
+{{ if .Values.postgres.enable }}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: db
+  labels:
+    app.kubernetes.io/name: db
+spec:
+  containers:
+  - name: db
+    image: {{ .Values.postgres.image }}
+    env:
+      {{- range .Values.postgres.env }}
+      - name: {{ .name }}
+        value: {{ .value }}
+      {{- end }}
+  hostname: todo-db
+{{ end }}

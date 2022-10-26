@@ -1,0 +1,1096 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    name: db
+  spec:
+    containers:
+    - args:
+      - --featureflags
+      - GOLANG_SSH_SERVER
+      - -U
+      - root
+      - -P
+      - "30070"
+      - -S
+      - "30071"
+      - -W
+      - /
+      - --healthcheck
+      - '{}'
+      - --
+      - docker-entrypoint.sh
+      - postgres
+      command:
+      - /lifeguard
+      env:
+      - name: POSTGRES_PASSWORD
+        value: password
+      - name: USER_KEY
+        value: |
+          ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILSlkeGxb64FZwYeBTiNXCmMwp+SEa3ZoYJPUGM4OwWD
+      - name: SANDCASTLE_SESSION_ID
+        value: eac8fe44-860d-4747-a70f-98ba413db411
+      - name: RAFTT_USER_ID
+        value: "10179"
+      - name: RAFTT_REPO_URL
+        value: https://github.com/rafttio/toodoo
+      - name: RAFTT_REPO_BRANCH
+        value: v2
+      - name: RAFTT_WORKLOAD_NAME
+        value: db
+      - name: RAFTT_WORKLOAD_TYPE
+        value: pod
+      image: registry-ha.raftt.io/library/postgres:13.4-alpine3.14
+      imagePullPolicy: Always
+      name: db
+      resources: {}
+      securityContext:
+        privileged: false
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/lib/postgresql/data
+        name: raftt-mount
+        subPath: unsynced/7d463b1b0ccb67b54f7c040f2e02c7f1de8fb1c4
+      - mountPath: /lifeguard
+        name: raftt-mount
+        readOnly: true
+        subPath: internal/lifeguard
+      - mountPath: /dropbearmulti
+        name: raftt-mount
+        readOnly: true
+        subPath: internal/dropbearmulti
+      - mountPath: /scp
+        name: raftt-mount
+        readOnly: true
+        subPath: internal/scp
+      - mountPath: raftt/plugins
+        name: raftt-mount
+        readOnly: true
+        subPath: internal/plugins
+    dnsConfig:
+      nameservers:
+      - 10.10.188.193
+      options:
+      - name: ndots
+        value: "0"
+    dnsPolicy: None
+    enableServiceLinks: true
+    hostname: todo-db
+    imagePullSecrets:
+    - name: raftt-registry-gcr-secret
+    - name: image-registry-secret-pullthrough
+    - name: mirror-registry-creds
+    nodeName: ip-10-10-180-95.eu-central-1.compute.internal
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: user-deployment-svc-account
+    serviceAccountName: user-deployment-svc-account
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: raftt-mount
+      persistentVolumeClaim:
+        claimName: pv-claim
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2022-10-23T07:51:34Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2022-10-23T07:51:37Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2022-10-23T07:51:37Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2022-10-23T07:51:34Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://9b732e078ae1be15c6ac3b9ef3ba1a732ea0484aad6fabda89935ab7413ec805
+      image: registry-ha.raftt.io/library/postgres:13.4-alpine3.14
+      imageID: registry-ha.raftt.io/library/postgres@sha256:c170270dc9ba94f491375e366fa2cf46d0bc0027e4a69d70e6e9d1454ba748dc
+      lastState: {}
+      name: db
+      ready: true
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2022-10-23T07:51:37Z"
+    hostIP: 10.10.180.95
+    phase: Running
+    podIP: 10.10.191.167
+    podIPs:
+    - ip: 10.10.191.167
+    qosClass: BestEffort
+    startTime: "2022-10-23T07:51:34Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      bb1cf041be62ee72-raftt-orig-cmd: '["tail","-f","/dev/null"]'
+      bb1cf041be62ee72-raftt-orig-ent: '[]'
+      kubernetes.io/psp: eks.privileged
+      raftt-codedir-0: eyIiOiIvY29kZSJ9
+      raftt-port-bb1cf041be62ee72-api: "30070"
+      raftt-port-bb1cf041be62ee72-ssh: "30071"
+      x-raftt-service-type: dev
+    creationTimestamp: "2022-10-23T07:51:42Z"
+    generateName: dev-
+    labels:
+      raftt-original-name: dev
+      raftt-originated-from: compose
+      raftt-type: environment
+    name: dev-gwh92
+    namespace: raftt-0a84d7f9a2d6b9bd1b2a706e2101094e
+    resourceVersion: "47500786"
+    uid: 6cf06b48-476e-4be5-b31c-4d6837ec2c95
+  spec:
+    affinity:
+      podAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchLabels:
+              raftt.io/app: sandcastle
+          topologyKey: kubernetes.io/hostname
+    automountServiceAccountToken: false
+    containers:
+    - args:
+      - --featureflags
+      - GOLANG_SSH_SERVER
+      - -U
+      - root
+      - -P
+      - "30070"
+      - -S
+      - "30071"
+      - -W
+      - /code
+      - --healthcheck
+      - '{}'
+      - --
+      - tail
+      - -f
+      - /dev/null
+      command:
+      - /lifeguard
+      env:
+      - name: USER_KEY
+        value: |
+          ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILSlkeGxb64FZwYeBTiNXCmMwp+SEa3ZoYJPUGM4OwWD
+      - name: SANDCASTLE_SESSION_ID
+        value: eac8fe44-860d-4747-a70f-98ba413db411
+      - name: RAFTT_USER_ID
+        value: "10179"
+      - name: RAFTT_REPO_URL
+        value: https://github.com/rafttio/toodoo
+      - name: RAFTT_REPO_BRANCH
+        value: v2
+      - name: RAFTT_WORKLOAD_NAME
+        value: dev
+      - name: RAFTT_WORKLOAD_TYPE
+        value: pod
+      image: private-registry.image-building.svc.cluster.local/rafttdev-imgs:bb1cf041be62ee72-eac8fe44-860d-4747-a70f-98ba413db411
+      imagePullPolicy: Always
+      name: dev
+      resources: {}
+      securityContext:
+        privileged: false
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /code
+        name: raftt-mount
+        subPath: repos/github.com/rafttio/toodoo
+      - mountPath: /root/.raftt/ssh/id_ed25519
+        name: secret-raftt-user-key
+        readOnly: true
+        subPath: value
+      - mountPath: /root/.raftt/ssh/id_ed25519.pub
+        name: secret-raftt-user-pub-key
+        readOnly: true
+        subPath: value
+      - mountPath: /lifeguard
+        name: raftt-mount
+        readOnly: true
+        subPath: internal/lifeguard
+      - mountPath: /dropbearmulti
+        name: raftt-mount
+        readOnly: true
+        subPath: internal/dropbearmulti
+      - mountPath: /scp
+        name: raftt-mount
+        readOnly: true
+        subPath: internal/scp
+      - mountPath: raftt/plugins
+        name: raftt-mount
+        readOnly: true
+        subPath: internal/plugins
+      - mountPath: /usr/local/bin/raftt
+        name: raftt-mount
+        readOnly: true
+        subPath: internal/in-env-raftt
+    dnsConfig:
+      nameservers:
+      - 10.10.188.193
+      options:
+      - name: ndots
+        value: "0"
+    dnsPolicy: None
+    enableServiceLinks: true
+    hostname: dev
+    imagePullSecrets:
+    - name: raftt-registry-gcr-secret
+    - name: image-registry-secret-pullthrough
+    - name: mirror-registry-creds
+    nodeName: ip-10-10-180-95.eu-central-1.compute.internal
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: user-deployment-svc-account
+    serviceAccountName: user-deployment-svc-account
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: secret-raftt-user-key
+      secret:
+        defaultMode: 256
+        secretName: secret-raftt-user-key
+    - name: secret-raftt-user-pub-key
+      secret:
+        defaultMode: 256
+        secretName: secret-raftt-user-pub-key
+    - name: raftt-mount
+      persistentVolumeClaim:
+        claimName: pv-claim
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2022-10-23T07:51:42Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2022-10-23T07:51:44Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2022-10-23T07:51:44Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2022-10-23T07:51:42Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://600094c99fb015dffafdac48fbac3170421d6e0f4a251a9a7e6a8704304b21b8
+      image: private-registry.image-building.svc.cluster.local/rafttdev-imgs:bb1cf041be62ee72-1286e15b-824d-4c12-9220-ed0f632923b4
+      imageID: private-registry.image-building.svc.cluster.local/rafttdev-imgs@sha256:93bdfd922c5e475a3ae023caac395cc4efe4e2e7434f8b4ef205c8c1eac22377
+      lastState: {}
+      name: dev
+      ready: true
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2022-10-23T07:51:44Z"
+    hostIP: 10.10.180.95
+    phase: Running
+    podIP: 10.10.188.192
+    podIPs:
+    - ip: 10.10.188.192
+    qosClass: BestEffort
+    startTime: "2022-10-23T07:51:42Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      c78d83820b7f122e-raftt-orig-cmd: '["/bin/sh","-c","cd /app && go run live_backend/main.go"]'
+      c78d83820b7f122e-raftt-orig-ent: '[]'
+      kubernetes.io/psp: eks.privileged
+      published-port-3001: "3002"
+      raftt-codedir-0: eyIiOiIvYXBwIn0=
+      raftt-port-c78d83820b7f122e-api: "30070"
+      raftt-port-c78d83820b7f122e-ssh: "30071"
+    creationTimestamp: "2022-10-23T07:51:42Z"
+    generateName: live-backend-
+    labels:
+      raftt-original-name: live-backend
+      raftt-originated-from: compose
+      raftt-type: environment
+    name: live-backend-fpqxl
+    namespace: raftt-0a84d7f9a2d6b9bd1b2a706e2101094e
+    resourceVersion: "47500822"
+    uid: a7d935d6-9ade-4248-aef0-fbf340b40320
+  spec:
+    affinity:
+      podAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchLabels:
+              raftt.io/app: sandcastle
+          topologyKey: kubernetes.io/hostname
+    automountServiceAccountToken: false
+    containers:
+    - args:
+      - --featureflags
+      - GOLANG_SSH_SERVER
+      - -U
+      - root
+      - -P
+      - "30070"
+      - -S
+      - "30071"
+      - -W
+      - /app
+      - --healthcheck
+      - '{}'
+      - --dependencies
+      - redis:30070=service_started
+      - --
+      - /bin/sh
+      - -c
+      - cd /app && go run live_backend/main.go
+      command:
+      - /lifeguard
+      env:
+      - name: USER_KEY
+        value: |
+          ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILSlkeGxb64FZwYeBTiNXCmMwp+SEa3ZoYJPUGM4OwWD
+      - name: SANDCASTLE_SESSION_ID
+        value: eac8fe44-860d-4747-a70f-98ba413db411
+      - name: RAFTT_USER_ID
+        value: "10179"
+      - name: RAFTT_REPO_URL
+        value: https://github.com/rafttio/toodoo
+      - name: RAFTT_REPO_BRANCH
+        value: v2
+      - name: RAFTT_WORKLOAD_NAME
+        value: live-backend
+      - name: RAFTT_WORKLOAD_TYPE
+        value: pod
+      image: private-registry.image-building.svc.cluster.local/rafttdev-imgs:c78d83820b7f122e-eac8fe44-860d-4747-a70f-98ba413db411
+      imagePullPolicy: Always
+      name: live-backend
+      ports:
+      - containerPort: 3001
+        protocol: TCP
+      resources: {}
+      securityContext:
+        privileged: false
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /app
+        name: raftt-mount
+        subPath: repos/github.com/rafttio/toodoo
+      - mountPath: /lifeguard
+        name: raftt-mount
+        readOnly: true
+        subPath: internal/lifeguard
+      - mountPath: /dropbearmulti
+        name: raftt-mount
+        readOnly: true
+        subPath: internal/dropbearmulti
+      - mountPath: /scp
+        name: raftt-mount
+        readOnly: true
+        subPath: internal/scp
+      - mountPath: raftt/plugins
+        name: raftt-mount
+        readOnly: true
+        subPath: internal/plugins
+    dnsConfig:
+      nameservers:
+      - 10.10.188.193
+      options:
+      - name: ndots
+        value: "0"
+    dnsPolicy: None
+    enableServiceLinks: true
+    hostname: live-backend
+    imagePullSecrets:
+    - name: raftt-registry-gcr-secret
+    - name: image-registry-secret-pullthrough
+    - name: mirror-registry-creds
+    nodeName: ip-10-10-180-95.eu-central-1.compute.internal
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: user-deployment-svc-account
+    serviceAccountName: user-deployment-svc-account
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: raftt-mount
+      persistentVolumeClaim:
+        claimName: pv-claim
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2022-10-23T07:51:42Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2022-10-23T07:51:52Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2022-10-23T07:51:52Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2022-10-23T07:51:42Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://18a985a5b888d137dace5e5c513fb7ff5db2497f4ef8fd36b9918d852f3b792c
+      image: private-registry.image-building.svc.cluster.local/rafttdev-imgs:c78d83820b7f122e-eac8fe44-860d-4747-a70f-98ba413db411
+      imageID: private-registry.image-building.svc.cluster.local/rafttdev-imgs@sha256:f4dd8f2002f079c69dc053ce3b7b39172c60bdcf3659ed5063c4cbbc5222e879
+      lastState: {}
+      name: live-backend
+      ready: true
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2022-10-23T07:51:52Z"
+    hostIP: 10.10.180.95
+    phase: Running
+    podIP: 10.10.191.168
+    podIPs:
+    - ip: 10.10.191.168
+    qosClass: BestEffort
+    startTime: "2022-10-23T07:51:42Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      4c1ad8ab4e33fbca-raftt-orig-cmd: '["redis-server"]'
+      4c1ad8ab4e33fbca-raftt-orig-ent: '["docker-entrypoint.sh"]'
+      kubernetes.io/psp: eks.privileged
+      raftt-port-4c1ad8ab4e33fbca-api: "30070"
+      raftt-port-4c1ad8ab4e33fbca-ssh: "30071"
+    creationTimestamp: "2022-10-23T07:51:34Z"
+    generateName: redis-
+    labels:
+      raftt-original-name: redis
+      raftt-originated-from: compose
+      raftt-type: environment
+    name: redis-7fwl6
+    namespace: raftt-0a84d7f9a2d6b9bd1b2a706e2101094e
+    resourceVersion: "47500744"
+    uid: 5327c664-3c94-4928-b43a-8a85b62ed697
+  spec:
+    affinity:
+      podAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchLabels:
+              raftt.io/app: sandcastle
+          topologyKey: kubernetes.io/hostname
+    automountServiceAccountToken: false
+    containers:
+    - args:
+      - --featureflags
+      - GOLANG_SSH_SERVER
+      - -U
+      - root
+      - -P
+      - "30070"
+      - -S
+      - "30071"
+      - -W
+      - /data
+      - --healthcheck
+      - '{}'
+      - --
+      - docker-entrypoint.sh
+      - redis-server
+      command:
+      - /lifeguard
+      env:
+      - name: USER_KEY
+        value: |
+          ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILSlkeGxb64FZwYeBTiNXCmMwp+SEa3ZoYJPUGM4OwWD
+      - name: SANDCASTLE_SESSION_ID
+        value: eac8fe44-860d-4747-a70f-98ba413db411
+      - name: RAFTT_USER_ID
+        value: "10179"
+      - name: RAFTT_REPO_URL
+        value: https://github.com/rafttio/toodoo
+      - name: RAFTT_REPO_BRANCH
+        value: v2
+      - name: RAFTT_WORKLOAD_NAME
+        value: redis
+      - name: RAFTT_WORKLOAD_TYPE
+        value: pod
+      image: registry-ha.raftt.io/library/redis:6-alpine3.13
+      imagePullPolicy: Always
+      name: redis
+      resources: {}
+      securityContext:
+        privileged: false
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /lifeguard
+        name: raftt-mount
+        readOnly: true
+        subPath: internal/lifeguard
+      - mountPath: /dropbearmulti
+        name: raftt-mount
+        readOnly: true
+        subPath: internal/dropbearmulti
+      - mountPath: /scp
+        name: raftt-mount
+        readOnly: true
+        subPath: internal/scp
+      - mountPath: raftt/plugins
+        name: raftt-mount
+        readOnly: true
+        subPath: internal/plugins
+    dnsConfig:
+      nameservers:
+      - 10.10.188.193
+      options:
+      - name: ndots
+        value: "0"
+    dnsPolicy: None
+    enableServiceLinks: true
+    hostname: redis
+    imagePullSecrets:
+    - name: raftt-registry-gcr-secret
+    - name: image-registry-secret-pullthrough
+    - name: mirror-registry-creds
+    nodeName: ip-10-10-180-95.eu-central-1.compute.internal
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: user-deployment-svc-account
+    serviceAccountName: user-deployment-svc-account
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: raftt-mount
+      persistentVolumeClaim:
+        claimName: pv-claim
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2022-10-23T07:51:34Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2022-10-23T07:51:37Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2022-10-23T07:51:37Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2022-10-23T07:51:34Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://204a8381ad62ecf5a721fe7319a0b61cfdbb3caaae3e59f5ab40f0c0aa260ce2
+      image: registry-ha.raftt.io/library/redis:6-alpine3.13
+      imageID: registry-ha.raftt.io/library/redis@sha256:6833ca04ec87a2222928157125dffcca22c68e2db304164cc050ee9cc6b05b4e
+      lastState: {}
+      name: redis
+      ready: true
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2022-10-23T07:51:36Z"
+    hostIP: 10.10.180.95
+    phase: Running
+    podIP: 10.10.191.164
+    podIPs:
+    - ip: 10.10.191.164
+    qosClass: BestEffort
+    startTime: "2022-10-23T07:51:34Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+      kubectl.kubernetes.io/default-container: sandcastle
+      kubernetes.io/psp: eks.privileged
+    creationTimestamp: "2022-10-23T07:49:09Z"
+    labels:
+      raftt.io/app: sandcastle
+    name: sandcastle
+    namespace: raftt-0a84d7f9a2d6b9bd1b2a706e2101094e
+    resourceVersion: "47499877"
+    uid: 4e1383b7-99b5-4ff2-8f60-0d8babd3fe6b
+  spec:
+    containers:
+    - env:
+      - name: RAFTT_DISABLE_PRODUCT_ANALYTICS
+      - name: ANALYTICS_WRITE_TOKEN
+        value: Fh03gMv0Vc4WotAeMBsMpuosqZVZaTT2
+      - name: ADDITIONAL_ROOT_CA
+        value: |
+          -----BEGIN CERTIFICATE-----
+          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
+          XCW+2YhA1rDD3QCRenE=
+          -----END CERTIFICATE-----
+      - name: S3_BUCKET_NAME
+        value: rafttdev2-raftt
+      - name: DNS_SUBDOMAIN
+        value: rafttdev
+      - name: RAFTT_KUBE_SA_NAME
+        value: sandcastle-svc-account
+      - name: RAFTT_KUBE_SA_TOKEN
+        value: eyJhbGciOiJSUzI1NiIsImtpZCI6IjUycWxvT2tHX05XdDlaZ055Q0VHUHZKNTNpQjJPNHk0cGhnczZMYTF5RFkifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJyYWZ0dC0wYTg0ZDdmOWEyZDZiOWJkMWIyYTcwNmUyMTAxMDk0ZSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJzYW5kY2FzdGxlLXN2Yy1hY2NvdW50LXRva2VuLTc3ZzVwIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6InNhbmRjYXN0bGUtc3ZjLWFjY291bnQiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiI5NmMxMTgzYi05YmRkLTQxN2ItOGI4Yi1jNDZhNTlkMGEzNTciLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6cmFmdHQtMGE4NGQ3ZjlhMmQ2YjliZDFiMmE3MDZlMjEwMTA5NGU6c2FuZGNhc3RsZS1zdmMtYWNjb3VudCJ9.d3CL5CBlkllNexf7Q2ccVfjCVXwGrEJmJ-OHWoj1V6u9bU8kI1UIdhC7niar5KbT80OGTWYOBOQu9WXtdqYapn9gu7krH59n8XhxZQ0Lqnd4BsIbP9ilkMqTIp0TYI5nxJBChx7kBC8wAU2g8anyLpN5gIV70vGtTk0EoBQa30oqh0om23m5enxeSE1CGysHOC-UKUNo2gth5DwjPGnd3_jPYxqMjzWvNoH7Esdq0O2ZmWCDsTf76iA29RsMnnArdxwYnFF0-QPHjb1uzA3Hveb4Roc8YLLi0jdt3H2Qf36kU0Ae1OYzXvEStsNY9xEkyHmOXCkQUB0aaZTGohoaNQ
+      - name: BETA_SANDCASTLE
+      - name: ACTIVITY_GRACE_PERIOD
+      - name: DISABLE_DNSMASQ
+      - name: ANALYTICS_FILE_SYNCING_REPORT_PERIOD
+      - name: AWS_REGION
+        value: eu-central-1
+      - name: RAFTT_FEATURE_FLAGS
+        value: GOLANG_SSH_SERVER
+      - name: RAFTT_FORCE_TLS12
+      - name: BACKEND_HOST
+      - name: DEDICATED_IMAGE_BUILDING_ADDRESS
+      - name: CHECK_CLONED_NUMBER_OF_RETRIES
+      - name: CLONE_TIMEOUT
+      image: 449049208064.dkr.ecr.eu-central-1.amazonaws.com/sandcastle:v67.0.2
+      imagePullPolicy: Always
+      name: sandcastle
+      ports:
+      - containerPort: 8080
+        protocol: TCP
+      - containerPort: 6090
+        protocol: TCP
+      - containerPort: 6666
+        protocol: TCP
+      resources:
+        requests:
+          cpu: "0"
+          memory: 1229Mi
+      securityContext: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /raftt
+        name: raftt-mount
+      - mountPath: /var/run/raftt/buildkit
+        name: buildkit-socket
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-g54mp
+        readOnly: true
+    - env:
+      - name: RAFTT_DISABLE_PRODUCT_ANALYTICS
+      - name: ANALYTICS_WRITE_TOKEN
+        value: Fh03gMv0Vc4WotAeMBsMpuosqZVZaTT2
+      - name: ADDITIONAL_ROOT_CA
+        value: |
+          -----BEGIN CERTIFICATE-----
+          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
+          XCW+2YhA1rDD3QCRenE=
+          -----END CERTIFICATE-----
+      image: 449049208064.dkr.ecr.eu-central-1.amazonaws.com/container-proxy:v67.0.2
+      imagePullPolicy: Always
+      name: container-proxy
+      resources: {}
+      securityContext:
+        privileged: true
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /raftt
+        name: raftt-mount
+      - mountPath: /run/containerd/containerd.sock
+        name: containerd-socket
+      - mountPath: /var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/
+        name: containerd-snapshots-vol
+        readOnly: true
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-g54mp
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: ip-10-10-180-95.eu-central-1.compute.internal
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Never
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: raftt-mount
+      persistentVolumeClaim:
+        claimName: pv-claim
+    - hostPath:
+        path: /run/containerd/containerd.sock
+        type: Socket
+      name: containerd-socket
+    - hostPath:
+        path: /var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/
+        type: Directory
+      name: containerd-snapshots-vol
+    - hostPath:
+        path: /var/run/raftt/buildkit
+        type: Directory
+      name: buildkit-socket
+    - name: kube-api-access-g54mp
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2022-10-23T07:49:13Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2022-10-23T07:49:19Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2022-10-23T07:49:19Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2022-10-23T07:49:13Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://28314895d2d8dfdde4d5f752d31124840b9e0bafc22d6d57c2042591f113a837
+      image: 449049208064.dkr.ecr.eu-central-1.amazonaws.com/container-proxy:v67.0.2
+      imageID: 449049208064.dkr.ecr.eu-central-1.amazonaws.com/container-proxy@sha256:1b91032f268cbda0a8ec71e497f3b1218ca1b39f9804729858ac9d3acb3b4f7d
+      lastState: {}
+      name: container-proxy
+      ready: true
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2022-10-23T07:49:18Z"
+    - containerID: containerd://dde4d4a30b2b496111bc2fc850b78c4f3d80ecfc3a65c3ab521c5411d829c99f
+      image: 449049208064.dkr.ecr.eu-central-1.amazonaws.com/sandcastle:v67.0.2
+      imageID: 449049208064.dkr.ecr.eu-central-1.amazonaws.com/sandcastle@sha256:677904df68cc790efcb0fec8d1fa9ad8e2c69271ed5ec12d18d08f04ae5e254b
+      lastState: {}
+      name: sandcastle
+      ready: true
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2022-10-23T07:49:18Z"
+    hostIP: 10.10.180.95
+    phase: Running
+    podIP: 10.10.188.193
+    podIPs:
+    - ip: 10.10.188.193
+    qosClass: Burstable
+    startTime: "2022-10-23T07:49:13Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      f3ae1ec77c51590c-raftt-orig-cmd: '["/bin/sh","-c","python app.py"]'
+      f3ae1ec77c51590c-raftt-orig-ent: '[]'
+      kubernetes.io/psp: eks.privileged
+      published-port-3000: "3000"
+      raftt-codedir-0: eyIiOiIvYXBwIn0=
+      raftt-port-f3ae1ec77c51590c-api: "30070"
+      raftt-port-f3ae1ec77c51590c-ssh: "30071"
+    creationTimestamp: "2022-10-23T07:51:55Z"
+    generateName: web-
+    labels:
+      raftt-original-name: web
+      raftt-originated-from: compose
+      raftt-type: environment
+    name: web-9fp27
+    namespace: raftt-0a84d7f9a2d6b9bd1b2a706e2101094e
+    resourceVersion: "47500873"
+    uid: e7a3797c-d9a1-4813-bb0f-91c3189a14bb
+  spec:
+    affinity:
+      podAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchLabels:
+              raftt.io/app: sandcastle
+          topologyKey: kubernetes.io/hostname
+    automountServiceAccountToken: false
+    containers:
+    - args:
+      - --featureflags
+      - GOLANG_SSH_SERVER
+      - -U
+      - root
+      - -P
+      - "30070"
+      - -S
+      - "30071"
+      - -W
+      - /app
+      - --healthcheck
+      - '{}'
+      - --dependencies
+      - todo-db:30070=service_started
+      - --dependencies
+      - live-backend:30070=service_started
+      - --
+      - /bin/sh
+      - -c
+      - python app.py
+      command:
+      - /lifeguard
+      env:
+      - name: DATABASE_URL
+        value: postgresql://postgres:password@todo-db/app_development
+      - name: USER_KEY
+        value: |
+          ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILSlkeGxb64FZwYeBTiNXCmMwp+SEa3ZoYJPUGM4OwWD
+      - name: SANDCASTLE_SESSION_ID
+        value: eac8fe44-860d-4747-a70f-98ba413db411
+      - name: RAFTT_USER_ID
+        value: "10179"
+      - name: RAFTT_REPO_URL
+        value: https://github.com/rafttio/toodoo
+      - name: RAFTT_REPO_BRANCH
+        value: v2
+      - name: RAFTT_WORKLOAD_NAME
+        value: web
+      - name: RAFTT_WORKLOAD_TYPE
+        value: pod
+      image: private-registry.image-building.svc.cluster.local/rafttdev-imgs:f3ae1ec77c51590c-eac8fe44-860d-4747-a70f-98ba413db411
+      imagePullPolicy: Always
+      name: web
+      ports:
+      - containerPort: 3000
+        protocol: TCP
+      resources: {}
+      securityContext:
+        privileged: false
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /app
+        name: raftt-mount
+        subPath: repos/github.com/rafttio/toodoo
+      - mountPath: /lifeguard
+        name: raftt-mount
+        readOnly: true
+        subPath: internal/lifeguard
+      - mountPath: /dropbearmulti
+        name: raftt-mount
+        readOnly: true
+        subPath: internal/dropbearmulti
+      - mountPath: /scp
+        name: raftt-mount
+        readOnly: true
+        subPath: internal/scp
+      - mountPath: raftt/plugins
+        name: raftt-mount
+        readOnly: true
+        subPath: internal/plugins
+    dnsConfig:
+      nameservers:
+      - 10.10.188.193
+      options:
+      - name: ndots
+        value: "0"
+    dnsPolicy: None
+    enableServiceLinks: true
+    hostname: web
+    imagePullSecrets:
+    - name: raftt-registry-gcr-secret
+    - name: image-registry-secret-pullthrough
+    - name: mirror-registry-creds
+    nodeName: ip-10-10-180-95.eu-central-1.compute.internal
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: user-deployment-svc-account
+    serviceAccountName: user-deployment-svc-account
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: raftt-mount
+      persistentVolumeClaim:
+        claimName: pv-claim
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2022-10-23T07:51:55Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2022-10-23T07:52:02Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2022-10-23T07:52:02Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2022-10-23T07:51:55Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://0e542454b3b81fd4ce0592f5c742cfcdeb8bc4bbf82c1d7935a624af5c8a1406
+      image: private-registry.image-building.svc.cluster.local/rafttdev-imgs:f3ae1ec77c51590c-eac8fe44-860d-4747-a70f-98ba413db411
+      imageID: private-registry.image-building.svc.cluster.local/rafttdev-imgs@sha256:f147b8b8bf105f0668c19b367a837402f26e97dc65f2fb0f95677b43cda7871a
+      lastState: {}
+      name: web
+      ready: true
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2022-10-23T07:52:02Z"
+    hostIP: 10.10.180.95
+    phase: Running
+    podIP: 10.10.190.17
+    podIPs:
+    - ip: 10.10.190.17
+    qosClass: BestEffort
+    startTime: "2022-10-23T07:51:55Z"
+kind: List
+metadata:
+  resourceVersion: ""
