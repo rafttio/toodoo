@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: live-backend
-  label:
+  labels:
     app.kubernetes.io/name: live-backend
 spec:
   replicas: {{ .Values.liveBackend.replicas }}
