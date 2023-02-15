@@ -4,7 +4,7 @@
     <working_directory value="$PROJECT_DIR$" />
     <go_parameters value="-i" />
     <envs>
-      <env name="RAFTT_SERVICE" value="live-backend" />
+      <env name="RAFTT_WORKLOAD" value="live-backend" />
     </envs>
     <kind value="FILE" />
     <directory value="$PROJECT_DIR$" />
