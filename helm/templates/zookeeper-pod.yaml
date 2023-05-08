@@ -1,0 +1,17 @@
+{{ if .Values.kafka.enable }}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: zookeeper
+  labels:
+    app.kubernetes.io/name: zookeeper
+spec:
+  containers:
+  - name: zookeeper
+    image: {{ .Values.kafka.zookeeper.image }}:{{ .Values.kafka.tag }}
+    env:
+      - name: ZOOKEEPER_CLIENT_PORT
+        value: "2181"
+      - name: ZOOKEEPER_TICK_TIME
+        value: "2000"
+{{ end }}

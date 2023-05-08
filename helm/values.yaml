@@ -1,13 +1,22 @@
+postgresUrl: postgresql://postgres:password@todo-db/app_development
+redisUrl: redis:6379
+kafkaBroker: kafka0:29092
+kafkaZookeeper: zookeeper:2181
+
 web:
   replicas: 4
-  postgresUrl: postgresql://postgres:password@todo-db/app_development
 
 liveBackend:
   replicas: 2
-  redisUrl: redis:6379
+
+asyncHandler:
+  replicas: 1
 
 postgres:
   enable: false
 
 redis:
+  enable: false
+
+kafka:
   enable: false

@@ -1,0 +1,14 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="async-handler" type="js.build_tools.npm">
+    <package-json value="$PROJECT_DIR$/async_handler/package.json" />
+    <command value="run" />
+    <scripts>
+      <script value="start" />
+    </scripts>
+    <node-interpreter value="project" />
+    <envs>
+      <env name="RAFTT_WORKLOAD" value="async-handler" />
+    </envs>
+    <method v="2" />
+  </configuration>
+</component>

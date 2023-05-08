@@ -1,0 +1,17 @@
+{{ if .Values.kafka.enable }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka0
+  labels:
+    app.kubernetes.io/name: kafka0
+spec:
+  ports:
+    - port: 29092
+      protocol: TCP
+      targetPort: 29092
+  selector:
+    app.kubernetes.io/name: kafka0
+  type: ClusterIP
+  clusterIP: None
+{{ end }}

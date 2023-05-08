@@ -2,7 +2,6 @@
   <configuration default="false" name="live-backend" type="GoApplicationRunConfiguration" factoryName="Go Application">
     <module name="toodoo" />
     <working_directory value="$PROJECT_DIR$" />
-    <go_parameters value="-i" />
     <envs>
       <env name="RAFTT_WORKLOAD" value="live-backend" />
     </envs>

@@ -1,10 +1,16 @@
+postgresUrl: postgresql://postgres:password@todo-db/app_development
+redisUrl: redis:6379
+kafkaBroker: kafka0:29092
+kafkaZookeeper: zookeeper:2181
+
 web:
   replicas: 1
-  postgresUrl: postgresql://postgres:password@todo-db/app_development
 
 liveBackend:
   replicas: 1
-  redisUrl: redis:6379
+
+asyncHandler:
+  replicas: 1
 
 postgres:
   enable: true
@@ -12,7 +18,21 @@ postgres:
   env:
     - name: POSTGRES_PASSWORD
       value: password
+    - name: POSTGRES_DB
+      value: app_development
 
 redis:
   enable: true
   image: redis:6-alpine3.13
+
+kafka:
+  enable: true
+  tag: 7.3.0
+  broker:
+    image: confluentinc/cp-kafka
+  zookeeper:
+    image: confluentinc/cp-zookeeper
+  kcat:
+    image: confluentinc/cp-kcat
+  ui:
+    image: provectuslabs/kafka-ui:latest

@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: live-backend
-          image: live-backend
+          image: raftt/demo-live-backend
           env:
             - name: REDIS_URL
-              value: {{ .Values.liveBackend.redisUrl }}
+              value: {{ .Values.redisUrl }}

@@ -1,0 +1,24 @@
+{
+  "name": "async-handler",
+  "version": "1.0.0",
+  "description": "Async Messages Handler",
+  "main": "src/app.ts",
+  "repository": "git@github.com:rafttio/toodoo.git",
+  "author": "Raftt",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "start": "node ./dist/app.js",
+    "dev": "ts-node ./src/app.ts"
+  },
+  "dependencies": {
+    "@types/node": "^18.11.9",
+    "kafkajs": "^2.2.2",
+    "knex": "^2.3.0",
+    "pg": "^8.8.0",
+    "typescript": "^4.8.4"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.1"
+  }
+}

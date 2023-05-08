@@ -1,0 +1,28 @@
+{{ if .Values.kafka.enable }}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kafka-ui
+  labels:
+    app.kubernetes.io/name: kafka-ui
+spec:
+  containers:
+    - name: kafka-ui
+      image: {{ .Values.kafka.ui.image }}
+      env:
+        - name: KAFKA_CLUSTERS_0_NAME
+          value: "local"
+        - name: KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS
+          value: {{ .Values.kafkaBroker }}
+        - name: KAFKA_CLUSTERS_0_ZOOKEEPER
+          value: {{ .Values.kafkaZookeeper }}
+        - name: KAFKA_CLUSTERS_0_METRICS_PORT
+          value: "9997"
+  initContainers:
+    - name: init-kafka
+      image: {{ .Values.kafka.kcat.image }}:{{ .Values.kafka.tag }}
+      command: [ 'sh', '-c', "until kcat -b $KAFKA_BOOTSTRAP_SERVER -L; do echo waiting for kafka; sleep 1; done" ]
+      env:
+        - name: KAFKA_BOOTSTRAP_SERVER
+          value: {{ .Values.kafkaBroker }}
+{{ end }}

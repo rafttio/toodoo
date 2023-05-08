@@ -20,6 +20,25 @@
             "raftt": {
                 "workload": "live-backend"
             }
+        },
+        {
+            "name": "async-handler",
+            "type": "node",
+            "request": "launch",
+            "runtimeExecutable": "yarn",
+            "runtimeArgs": [
+                "start",
+            ],
+            "skipFiles": [
+                "<node_internals>/**",
+            ],
+            "outFiles": [
+                "${workspaceFolder}/async_handler/dist/**/*.js"
+            ],
+            "cwd": "${workspaceFolder}/async_handler",
+            "raftt": {
+                "workload": "async-handler"
+            }
         }
     ]
 }

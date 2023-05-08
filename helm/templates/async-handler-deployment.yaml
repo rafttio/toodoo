@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: web
+  name: async-handler
   labels:
-    app.kubernetes.io/name: web
+    app.kubernetes.io/name: async-handler
 spec:
-  replicas: {{ .Values.web.replicas }}
+  replicas: {{ .Values.asyncHandler.replicas }}
   selector:
     matchLabels:
-      app.kubernetes.io/name: web
+      app.kubernetes.io/name: async-handler
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: web
+        app.kubernetes.io/name: async-handler
     spec:
       containers:
-        - name: web
-          image: raftt/demo-web
+        - name: async-handler
+          image: raftt/demo-async-handler
           env:
             - name: DATABASE_URL
               value: {{ .Values.postgresUrl }}
